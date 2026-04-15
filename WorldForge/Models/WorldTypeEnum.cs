@@ -1,18 +1,15 @@
 ﻿namespace WorldForge.Models
 {
-    public class WorldTypeEnum
+        public enum WorldTypeEnum
     {
-        public enum WorldType
-        {
             Fantasy,
             SciFi,
             Historical,
             Realism,
-            Mediaval,
+            Medieval,
             PostApocalyptic,
             Utopia,
             Futuristic,
             Other
         }
     }
-}

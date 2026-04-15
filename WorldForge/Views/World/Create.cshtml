@@ -1,0 +1,37 @@
+﻿@model WorldForge.ViewModel.CreateWorldViewModel
+@using WorldForge.Models
+
+@{
+    ViewData["Title"] = "Create World";
+}
+
+<h1>Create World</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Enter the name of your world</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Put a short description of your world</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorldType"></label>
+        <select asp-for="WorldType" class="form-control" asp-items="Html.GetEnumSelectList<WorldForge.Models.WorldTypeEnum>()">
+            <option value="">-- Choose type of your world --</option>
+        </select>
+        <span asp-validation-for="WorldType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsPublic" class="form-check-input" />
+        <label asp-for="IsPublic" class="form-check-label">Do you want to make this a public world?</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
