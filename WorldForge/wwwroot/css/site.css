@@ -1,3 +1,10 @@
+:root {
+    --primair: #EB8DB5 
+    --secundair: #A8D1E7 
+    --accent: #DBD6DF 
+    --panel-background: #b8A63263
+}
+
 html {
   font-size: 14px;
 }
@@ -18,7 +25,14 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: url('/Image/bg.webp') no-repeat center center fixed;
+    background-size: cover;
+}
+.main-panel {
+    background-color: var(--panel-bg);
+    border-radius: 30px;
+    backdrop-filter: blur(2px);
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +42,47 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.card {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #EB8DB5, #A8D1E7);
+    border-radius: 20px 20px 0 0 !important;
+}
+
+.field-box {
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+    .field-box label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #7a6b7e;
+    }
+
+    .field-box .form-control, .field-box .form-select {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+    }
+
+.btn-create {
+    background: linear-gradient(135deg, #EB8DB5, #A8D1E7);
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 700;
+    color: white;
 }

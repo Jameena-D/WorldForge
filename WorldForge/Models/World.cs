@@ -6,7 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        //add for image later
+        //image
 
         public WorldTypeEnum WorldType { get; set; } 
         public bool isPublic { get; set; }  
