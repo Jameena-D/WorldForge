@@ -1,8 +1,7 @@
 :root {
-    --primair: #EB8DB5 
-    --secundair: #A8D1E7 
-    --accent: #DBD6DF 
-    --panel-background: #b8A63263
+    --primair: #A63263 
+    --secundair: #724a91 
+    --accent: #Eb8DB5
 }
 
 html {
@@ -13,6 +12,14 @@ html {
   html {
     font-size: 16px;
   }
+}
+
+.navbar {
+    background: linear-gradient(135deg, #A63263, #724a91 );
+}
+
+.nav-link {
+    color: white;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -28,11 +35,6 @@ body {
     margin-bottom: 60px;
     background: url('/Image/bg.webp') no-repeat center center fixed;
     background-size: cover;
-}
-.main-panel {
-    background-color: var(--panel-bg);
-    border-radius: 30px;
-    backdrop-filter: blur(2px);
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -52,7 +54,7 @@ body {
 }
 
 .card-header {
-    background: linear-gradient(135deg, #EB8DB5, #A8D1E7);
+    background: linear-gradient(135deg, #A63263, #724a91 );
     border-radius: 20px 20px 0 0 !important;
 }
 
@@ -78,7 +80,7 @@ body {
     }
 
 .btn-create {
-    background: linear-gradient(135deg, #EB8DB5, #A8D1E7);
+    background: linear-gradient(135deg, #A63263, #724a91 );
     border: none;
     border-radius: 12px;
     width: 100%;
