@@ -16,6 +16,8 @@ html {
 
 .navbar {
     background: linear-gradient(135deg, #A63263, #724a91 );
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 0 0 20px 20px
 }
 
 .nav-link {
@@ -56,6 +58,9 @@ body {
 .card-header {
     background: linear-gradient(135deg, #A63263, #724a91 );
     border-radius: 20px 20px 0 0 !important;
+    text-align:center;
+    color: white;
+    font-weight: bold;
 }
 
 .field-box {
@@ -77,6 +82,7 @@ body {
         background: transparent;
         box-shadow: none;
         padding: 0;
+        color: #7a6b7e;
     }
 
 .btn-create {
@@ -85,6 +91,6 @@ body {
     border-radius: 12px;
     width: 100%;
     padding: 0.75rem;
-    font-weight: 700;
+    font-weight: bold;
     color: white;
 }
