@@ -1,3 +1,9 @@
+:root {
+    --primair: #A63263 
+    --secundair: #724a91 
+    --accent: #Eb8DB5
+}
+
 html {
   font-size: 14px;
 }
@@ -6,6 +12,16 @@ html {
   html {
     font-size: 16px;
   }
+}
+
+.navbar {
+    background: linear-gradient(135deg, #A63263, #724a91 );
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 0 0 20px 20px
+}
+
+.nav-link {
+    color: white;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -18,7 +34,9 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: url('/Image/bg.webp') no-repeat center center fixed;
+    background-size: cover;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +46,51 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.card {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #A63263, #724a91 );
+    border-radius: 20px 20px 0 0 !important;
+    text-align:center;
+    color: white;
+    font-weight: bold;
+}
+
+.field-box {
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+    .field-box label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #7a6b7e;
+    }
+
+    .field-box .form-control, .field-box .form-select {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        color: #7a6b7e;
+    }
+
+.btn-create {
+    background: linear-gradient(135deg, #A63263, #724a91 );
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: bold;
+    color: white;
 }
