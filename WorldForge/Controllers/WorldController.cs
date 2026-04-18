@@ -1,10 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WorldForge.ViewModel;
+using WorldForge.Models;
+using WorldForge.Data;
 
 namespace WorldForge.Controllers
 {
     public class WorldController : Controller
     {
+        private readonly AppDbContext _context;
+
+        public WorldController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -27,15 +36,25 @@ namespace WorldForge.Controllers
         [HttpPost]
         public IActionResult Create(CreateWorldViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Here you would typically save the world to the database
-                // For now, we'll just redirect to a success page or the world details page
-                TempData["SuccessMessage"] = "Wereld succesvol opgeslagen.";
-                return RedirectToAction("Index", "Home"); // Redirect to home or world details page
+                // If we got this far, something failed; redisplay form with validation errors
+                return View(model);
             }
-            // If we got this far, something failed; redisplay form with validation errors
-            return View(model);
+
+            var world = new World
+            {
+                Name = model.Name,
+                Description = model.Description,
+                WorldType = model.WorldType!.Value,
+                IsPublic = model.IsPublic,
+            };
+            _context.Worlds.Add(world);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Wereld succesvol opgeslagen.";
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
