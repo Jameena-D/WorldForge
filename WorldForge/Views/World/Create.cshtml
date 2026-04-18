@@ -13,8 +13,9 @@
         </div>
 
         <div class="card-body p-4">
-            <form asp-action="Create" method="post">
+            <div id="formMessage" class="mb-3"></div>
 
+            <form id="createWorldForm">
                 <div class="field-box">
                     <label asp-for="Name">World Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Willowdale" />
@@ -41,10 +42,8 @@
                 </div>
 
                 <button type="submit" class="btn-create mt-2">✨ Create World</button>
-
             </form>
         </div>
-
     </div>
 </div>
 
@@ -52,4 +51,42 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        document.getElementById("createWorldForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const messageBox = document.getElementById("formMessage");
+            messageBox.innerHTML = "";
+
+            const data = {
+                name: document.getElementById("Name").value,
+                description: document.getElementById("Description").value,
+                worldType: document.getElementById("WorldType").value,
+                isPublic: document.getElementById("IsPublic").checked
+            };
+
+            try {
+                const response = await fetch("/api/worlds", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageBox.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+                    document.getElementById("createWorldForm").reset();
+                } else {
+                    messageBox.innerHTML = `<div class="alert alert-danger">${result.message ?? "Er ging iets mis bij het opslaan."}</div>`;
+                }
+            } catch (error) {
+                messageBox.innerHTML = `<div class="alert alert-danger">Er ging iets mis met de verbinding naar de server.</div>`;
+                console.error(error);
+            }
+        });
+    </script>
 }

@@ -7,12 +7,6 @@ namespace WorldForge.Controllers
 {
     public class WorldController : Controller
     {
-        private readonly AppDbContext _context;
-
-        public WorldController(AppDbContext context)
-        {
-            _context = context;
-        }
 
         [HttpGet]
         public IActionResult Create()
@@ -31,30 +25,6 @@ namespace WorldForge.Controllers
                 }
             };
             return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Create(CreateWorldViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                // If we got this far, something failed; redisplay form with validation errors
-                return View(model);
-            }
-
-            var world = new World
-            {
-                Name = model.Name,
-                Description = model.Description,
-                WorldType = model.WorldType!.Value,
-                IsPublic = model.IsPublic,
-            };
-            _context.Worlds.Add(world);
-            _context.SaveChanges();
-
-            TempData["SuccessMessage"] = "Wereld succesvol opgeslagen.";
-
-            return RedirectToAction("Index", "Home");
         }
     }
 }
