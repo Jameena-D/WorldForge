@@ -18,13 +18,13 @@
             <form id="createWorldForm" novalidate>
                 <div class="field-box">
                     <label asp-for="Name">World Name</label>
-                    <input asp-for="Name" class="form-control" placeholder="Willowdale" />
+                    <input asp-for="Name" class="form-control" placeholder="Willowdale" maxlength="50" />
                     <span asp-validation-for="Name" class="text-danger small"></span>
                 </div>
 
                 <div class="field-box">
                     <label asp-for="Description">Description</label>
-                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe your world…"></textarea>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe your world…" maxlength="500"></textarea>
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
