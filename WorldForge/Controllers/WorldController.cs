@@ -13,7 +13,7 @@ namespace WorldForge.Controllers
         {
             var model = new CreateWorldViewModel
             {
-                // Initialize any default values for the form here if needed
+                // Initialize any default values for the form here if needed is not currently being used but is in preperation for future function.
                 Sections = new List<WorldSectionInputViewModel>
                 {
                     new WorldSectionInputViewModel { Title = "Lore", Blocks = new() { new() } },

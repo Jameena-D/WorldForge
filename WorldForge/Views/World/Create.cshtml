@@ -15,7 +15,7 @@
         <div class="card-body p-4">
             <div id="formMessage" class="mb-3"></div>
 
-            <form id="createWorldForm">
+            <form id="createWorldForm" novalidate>
                 <div class="field-box">
                     <label asp-for="Name">World Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Willowdale" />
@@ -30,7 +30,7 @@
 
                 <div class="field-box">
                     <label asp-for="WorldType">World Type</label>
-                    <select asp-for="WorldType" class="form-select" asp-items="Html.GetEnumSelectList<WorldForge.Models.WorldTypeEnum>()">
+                    <select asp-for="WorldType" class="form-select" asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
                         <option value="">Choose a genre…</option>
                     </select>
                     <span asp-validation-for="WorldType" class="text-danger small"></span>
@@ -51,42 +51,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
-    <script>
-        document.getElementById("createWorldForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
-
-            const messageBox = document.getElementById("formMessage");
-            messageBox.innerHTML = "";
-
-            const data = {
-                name: document.getElementById("Name").value,
-                description: document.getElementById("Description").value,
-                worldType: document.getElementById("WorldType").value,
-                isPublic: document.getElementById("IsPublic").checked
-            };
-
-            try {
-                const response = await fetch("/api/worlds", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    messageBox.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
-                    document.getElementById("createWorldForm").reset();
-                } else {
-                    messageBox.innerHTML = `<div class="alert alert-danger">${result.message ?? "Er ging iets mis bij het opslaan."}</div>`;
-                }
-            } catch (error) {
-                messageBox.innerHTML = `<div class="alert alert-danger">Er ging iets mis met de verbinding naar de server.</div>`;
-                console.error(error);
-            }
-        });
-    </script>
 }

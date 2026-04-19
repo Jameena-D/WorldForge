@@ -6,6 +6,7 @@ namespace WorldForge.ViewModel
 {
     public class CreateWorldViewModel
     {
+        //T3 : Maxlength and required validation for the name and description fields, and required validation for the world type field. This ensures that the data submitted by the user meets the necessary criteria before being processed.
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(50, ErrorMessage = "Name cannot exceed 50 characters.")]
         public string Name { get; set; } = string.Empty;

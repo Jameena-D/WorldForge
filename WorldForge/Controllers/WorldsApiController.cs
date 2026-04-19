@@ -17,23 +17,19 @@ namespace WorldForge.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateWorldViewModel model)
+        public IActionResult Create([FromBody]CreateWorldViewModel model)
         {
+            // T1 : Validate the incoming model
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
-            }
-            
-            if (model.WorldType == null)
-            {
-                return BadRequest("WorldType is required.");
+                return ValidationProblem(ModelState);
             }
 
             var world = new World
             {
                 Name = model.Name,
                 Description = model.Description,
-                WorldType = model.WorldType.Value,
+                WorldType = model.WorldType!.Value,
                 IsPublic = model.IsPublic,
                 CreatedAt = DateTime.UtcNow
             };
