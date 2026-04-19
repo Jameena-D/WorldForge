@@ -9,7 +9,9 @@
         //image
 
         public WorldTypeEnum WorldType { get; set; } 
-        public bool isPublic { get; set; }  
+        public bool IsPublic { get; set; }  
         public List<WorldSection> Sections { get; set; } = new List<WorldSection>();
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

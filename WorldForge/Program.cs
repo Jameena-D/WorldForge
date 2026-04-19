@@ -1,7 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using WorldForge.Data;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySQL(connectionString));
+
+
+// Add services to the container. Makes sure that enums can be bound to api endpoints as strings, and that they are serialized as strings in JSON responses.
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 var app = builder.Build();
 
