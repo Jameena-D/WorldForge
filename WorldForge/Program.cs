@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using WorldForge.Data;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
