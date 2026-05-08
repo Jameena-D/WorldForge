@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WorldForge.ViewModel;
-using WorldForge.Models;
-using WorldForge.Data;
+using RestApi.Models;
+using RestApi.Data;
 
-namespace WorldForge.Controllers
+namespace RestApi.Controllers
 {
     [ApiController]
     [Route("api/Worlds")]
