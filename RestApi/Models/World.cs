@@ -1,4 +1,4 @@
-﻿namespace WorldForge.Models
+﻿namespace RestApi.Models
 {
     public class World
     {
