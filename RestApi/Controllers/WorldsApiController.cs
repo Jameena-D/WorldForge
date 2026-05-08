@@ -1,43 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestApi.Models;
 using RestApi.Data;
+using RestApi.DTO;
 
 namespace RestApi.Controllers
 {
     [ApiController]
-    [Route("api/Worlds")]
-    public class WorldsApiController : ControllerBase
+    [Route("api/worlds")]
+    public class WorldApiController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public WorldsApiController(AppDbContext context)
+        public WorldApiController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]CreateWorldViewModel model)
+        public IActionResult CreateWorld([FromBody] DTOWorld.CreateWorldRequest request)
         {
-            // T1 : Validate the incoming model
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
             }
 
-            var world = new World
+            var world = new RestApi.Models.World
             {
-                Name = model.Name,
-                Description = model.Description,
-                WorldType = model.WorldType!.Value,
-                IsPublic = model.IsPublic,
+                Name = request.Name,
+                Description = request.Description,
+                WorldType = request.WorldType,
+                IsPublic = request.IsPublic,
                 CreatedAt = DateTime.UtcNow
             };
 
             _context.Worlds.Add(world);
             _context.SaveChanges();
 
-            return Ok(new { message = "World created successfully. To add more details to the world and make use of the sections edit the world.", worldId = world.Id }
-                );
+            return Ok(new { worldId = world.Id });
         }
     }
 }

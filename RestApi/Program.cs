@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using RestApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySQL(connectionString));
 
 // Add services to the container.
 
