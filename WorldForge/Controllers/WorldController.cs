@@ -1,12 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Ocsp;
+using Shared.DTO;
 using WorldForge.ViewModel;
-using WorldForge.Models;
-using WorldForge.Data;
+using static Shared.DTO.DTOWorld;
+
 
 namespace WorldForge.Controllers
 {
     public class WorldController : Controller
     {
+        private readonly HttpClient _httpClient;
+
+        public WorldController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClient = httpClientFactory.CreateClient("WorldForgeApi");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateWorldViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var dto = new CreateWorldRequest
+            {
+                Name = model.Name,
+                Description = model.Description,
+                WorldType = model.WorldType!.Value,
+                IsPublic = model.IsPublic
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/worlds", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "🌍 World is saved!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "World could not be created.");
+            return View(model);
+        }
+
+
 
         [HttpGet]
         public IActionResult Create()

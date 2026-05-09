@@ -1,4 +1,6 @@
-﻿namespace WorldForge.Models
+﻿using Shared.Enum;
+
+namespace RestApi.Models
 {
     public class World
     {

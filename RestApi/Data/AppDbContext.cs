@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WorldForge.Models;
+using RestApi.Models;
 
-namespace WorldForge.Data
+namespace RestApi.Data
 {
     public class AppDbContext : DbContext
     {

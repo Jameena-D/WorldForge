@@ -1,4 +1,4 @@
-﻿namespace WorldForge.Models
+﻿namespace Shared.Enum
 {
         public enum WorldTypeEnum
     {

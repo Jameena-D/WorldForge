@@ -1,13 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using WorldForge.Data;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(connectionString));
-
+builder.Services.AddHttpClient("WorldForgeApi", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5006/");
+});
 
 // Add services to the container. Makes sure that enums can be bound to api endpoints as strings, and that they are serialized as strings in JSON responses.
 builder.Services.AddControllersWithViews()
@@ -17,7 +16,6 @@ builder.Services.AddControllersWithViews()
     });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
