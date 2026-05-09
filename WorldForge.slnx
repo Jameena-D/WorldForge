@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="RestApi/RestApi.csproj" Id="33d6ff79-e2ea-48ff-beb5-97d0b7f54179" />
+  <Project Path="Shared/Shared.csproj" Id="5df707ea-54ba-4508-ad00-b6cd838ffa45" />
   <Project Path="WorldForge/WorldForge.csproj" />
 </Solution>

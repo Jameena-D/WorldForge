@@ -1,4 +1,4 @@
-﻿namespace RestApi.Models
+﻿namespace Shared.Enum
 {
         public enum WorldTypeEnum
     {

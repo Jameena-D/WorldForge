@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using WorldForge.Models;
+using Shared.Enum;
 
 namespace WorldForge.ViewModel
 {

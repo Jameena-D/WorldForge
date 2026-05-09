@@ -1,6 +1,6 @@
-﻿using RestApi.Models;
+﻿using Shared.Enum;
 
-namespace RestApi.DTO
+namespace Shared.DTO
 {
     public class DTOWorld
     {

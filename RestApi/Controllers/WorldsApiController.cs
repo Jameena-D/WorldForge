@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestApi.Models;
 using RestApi.Data;
-using RestApi.DTO;
+using Shared.DTO;
 
 namespace RestApi.Controllers
 {

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1.Ocsp;
-using WorldForge.DTO;
-using WorldForge.Models;
+using Shared.DTO;
 using WorldForge.ViewModel;
-using static WorldForge.DTO.DTOWorld;
+using static Shared.DTO.DTOWorld;
 
 
 namespace WorldForge.Controllers
@@ -38,7 +37,7 @@ namespace WorldForge.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "🌍 World is saved! Edit your world to add more details.";
+                TempData["SuccessMessage"] = "🌍 World is saved!";
                 return RedirectToAction("Index", "Home");
             }
 
