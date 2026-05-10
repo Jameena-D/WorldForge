@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WorldForge.Views.Shared
 {
-    public class LoginPartiaModel : PageModel
+    public class _LoginPartialModel : PageModel
     {
         public void OnGet()
         {
