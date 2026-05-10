@@ -56,6 +56,8 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowMvc");
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
