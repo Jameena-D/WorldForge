@@ -4,38 +4,67 @@
 }
 
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <h2>Login</h2>
-            
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success">@TempData["Success"]</div>
-            }
+    <div class="row justify-content-center align-items-center">
+        
+        <!-- Welcome message -->
+        <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center">
+            <div class="welcome-message">
+            <h1>Welcome!</h1>
+            <h2>Have a great journey ahead...</h2>
+            </div>
+        </div>
 
-            <form asp-action="Login" method="post">
-                <div class="mb-3">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+        <!-- Login Card -->
+        <div class="col-12 col-lg-6">
+            <div class="card w-100" style="max-width: 400px; margin: 0 auto;">
+                
+                <!-- Card Header -->
+                <div class="card-header p-4 text-center">
+                    <h2>Login</h2>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                <!-- Card Body -->
+                <div class="card-body p-4">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+
+                    <form asp-action="Login" method="post">
+
+                        <!-- Email -->
+                        <div class="field-box">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="field-box">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" type="password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="field-box d-flex align-items-center">
+                            <input asp-for="RememberMe" type="checkbox" class="form-check-input me-2" />
+                            <label asp-for="RememberMe" class="mb-0"></label>
+                        </div>
+
+                        <!-- Validation summary -->
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <!-- Buttons -->
+                        <button type="submit" class="btn-create w-100 mt-2">Login</button>
+                        <a asp-action="Register" class="btn btn-link d-block text-center mt-2">Register</a>
+                    </form>
                 </div>
-
-                <div class="mb-3">
-                    <input asp-for="RememberMe" />
-                    <label asp-for="RememberMe"></label>
-                </div>
-
-                <div asp-validation-summary="All" class="text-danger"></div>
-
-                <button type="submit" class="btn btn-primary">Login</button>
-                <a asp-action="Register" class="btn btn-link">Register</a>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

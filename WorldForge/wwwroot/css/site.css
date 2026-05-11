@@ -48,49 +48,6 @@ body {
   text-align: start;
 }
 
-.card {
-    background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
-}
-
-.card-header {
-    background: linear-gradient(135deg, #A63263, #724a91 );
-    border-radius: 20px 20px 0 0 !important;
-    text-align:center;
-    color: white;
-    font-weight: bold;
-}
-
-.field-box {
-    background: rgba(255,255,255,0.5);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-}
-
-    .field-box label {
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #724a91;
-    }
-
-    .field-box .form-control, .field-box .form-select {
-        border: none;
-        background: transparent;
-        box-shadow: none;
-        padding: 0;
-        color: #7a6b7e;
-    }
-
-.btn-create {
-    background: linear-gradient(135deg, #A63263, #724a91 );
-    border: none;
-    border-radius: 12px;
-    width: 100%;
-    padding: 0.75rem;
-    font-weight: bold;
+.welcome-message {
     color: white;
 }
