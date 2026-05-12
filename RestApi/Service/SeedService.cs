@@ -31,7 +31,8 @@ namespace RestApi.Services
                 {
                     var adminUser = new Users
                     {
-                        UserName = "admin",
+                        FullName = "admin",
+                        UserName = adminEmail,
                         Email = adminEmail,
                         EmailConfirmed = true,
                         SecurityStamp = Guid.NewGuid().ToString()
