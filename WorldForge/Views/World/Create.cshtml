@@ -9,10 +9,12 @@
 <div class="d-flex justify-content-center mt-4">
     <div class="card w-100" style="max-width:580px">
 
+        <!-- Card Header -->
         <div class="card-header p-4">
             <h2 class="mb-1">🌍 Create a New World</h2>
         </div>
 
+        <!-- Card Body -->
         <div class="card-body p-4">
             <div id="formMessage" class="mb-3"></div>
 
@@ -26,18 +28,21 @@
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+                <!-- World Name -->
                 <div class="field-box">
                     <label asp-for="Name">World Name</label>
                     <input asp-for="Name" class="form-control" placeholder="Willowdale" maxlength="50" />
                     <span asp-validation-for="Name" class="text-danger small"></span>
                 </div>
 
+                <!-- World Description -->
                 <div class="field-box">
                     <label asp-for="Description">Description</label>
                     <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe your world…" maxlength="500"></textarea>
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
+                <!-- World Type -->
                 <div class="field-box">
                     <label asp-for="WorldType">World Type</label>
                     <select asp-for="WorldType" class="form-select" asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
@@ -46,11 +51,13 @@
                     <span asp-validation-for="WorldType" class="text-danger small"></span>
                 </div>
 
+                <!-- World public -->
                 <div class="field-box d-flex justify-content-between align-items-center">
                     <label asp-for="IsPublic" class="mb-0">Make this world public?</label>
                     <input asp-for="IsPublic" type="checkbox" class="form-check-input" style="width:2.5rem;height:1.4rem" />
                 </div>
 
+                <!-- Button -->
                 <button type="submit" class="btn-create mt-2">✨ Create World</button>
             </form>
         </div>

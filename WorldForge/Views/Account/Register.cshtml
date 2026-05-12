@@ -1,0 +1,56 @@
+﻿@model WorldForge.ViewModel.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="card w-100" style="max-width: 400px;">
+        
+        <!-- Card Header -->
+        <div class="card-header p-4 text-center">
+            <h2>Create account here ✨ </h2>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+
+
+            <form asp-action="Register" method="post">
+
+                <!-- Username -->
+                <div class="field-box">
+                    <label asp-for="Name">Username</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="field-box">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="field-box">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="field-box">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <!-- Button -->
+                <button type="submit" class="btn-create mt-2">Register</button>
+                <a asp-action="Login" class="btn btn-link">Back to Login</a>
+            </form>
+        </div>
+    </div>
+</div>
