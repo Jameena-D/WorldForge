@@ -53,7 +53,6 @@ namespace WorldForge.Controllers
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account");
 
-            // Gebruik hier _httpClient
             var response = await _httpClient.GetAsync($"api/worlds/myworlds/{userId}");
 
             if (!response.IsSuccessStatusCode)

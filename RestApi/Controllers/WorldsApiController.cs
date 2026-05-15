@@ -47,7 +47,15 @@ namespace RestApi.Controllers
             var worlds = await _context.Worlds
                 .Where(w => w.UserId == userId)
                 .ToListAsync();
-            return Ok(worlds);
+            return Ok(worlds.Select(w => new
+            {
+                w.Id,
+                w.Name,
+                w.Description,
+                WorldType = w.WorldType.ToString(),
+                w.IsPublic,
+                w.UserId
+            }));
         }
     }
 }

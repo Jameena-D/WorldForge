@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WorldForge.ViewModel.WorldViewModel>
+@using WorldForge.Models
+@using Shared.Enum
+
+<h2>My Worlds</h2>
+
+@if (!Model.Any())
+{
+    <p>You haven’t created any worlds yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>World Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var world in Model)
+            {
+                <tr>
+                    <td>@world.Name</td>
+                    <td>@world.Description</td>
+                    <td>@world.WorldType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
