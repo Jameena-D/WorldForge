@@ -2,6 +2,7 @@
 using RestApi.Models;
 using RestApi.Data;
 using Shared.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestApi.Controllers
 {
@@ -30,13 +31,23 @@ namespace RestApi.Controllers
                 Description = request.Description,
                 WorldType = request.WorldType,
                 IsPublic = request.IsPublic,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UserId = request.UserId
             };
 
             _context.Worlds.Add(world);
             _context.SaveChanges();
 
             return Ok(new { worldId = world.Id });
+        }
+
+        [HttpGet("myworlds/{userId}")]
+        public async Task<IActionResult> GetMyWorlds(string userId)
+        {
+            var worlds = await _context.Worlds
+                .Where(w => w.UserId == userId)
+                .ToListAsync();
+            return Ok(worlds);
         }
     }
 }

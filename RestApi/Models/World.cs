@@ -15,5 +15,7 @@ namespace RestApi.Models
         public List<WorldSection> Sections { get; set; } = new List<WorldSection>();
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public string UserId { get; set; } = string.Empty;
     }
 }

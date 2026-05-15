@@ -10,6 +10,7 @@ namespace Shared.DTO
             public string? Description { get; set; }
             public WorldTypeEnum WorldType { get; set; }
             public bool IsPublic { get; set; }
+            public string UserId { get; set; } = string.Empty;
         }
     }
 }
