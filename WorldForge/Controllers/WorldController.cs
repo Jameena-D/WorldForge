@@ -75,8 +75,20 @@ namespace WorldForge.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> EditWorld(int id)
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            var response = await _httpClient.GetAsync($"api/worlds/{id}");
+            if (!response.IsSuccessStatusCode)
+                return NotFound();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var world = JsonSerializer.Deserialize<WorldViewModel>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var model = new CreateWorldViewModel
             {
                 // Initialize any default values for the form here if needed is not currently being used but is in preperation for future function.

@@ -22,20 +22,5 @@ namespace WorldForge.ViewModel
         public WorldTypeEnum? WorldType { get; set; }
 
         public bool IsPublic { get; set; }
-
-        public List<WorldSectionInputViewModel> Sections { get; set; } = new List<WorldSectionInputViewModel>();
-    }
-
-    public class WorldSectionInputViewModel
-    {
-        public string Title { get; set; } = string.Empty;
-
-        public List<WorldSectionBlockInputViewModel> Blocks { get; set; } = new List<WorldSectionBlockInputViewModel>();
-    }
-
-    public class WorldSectionBlockInputViewModel
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
     }
 }
