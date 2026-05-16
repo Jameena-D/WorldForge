@@ -40,7 +40,7 @@ namespace WorldForge.Controllers
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "🌍 World is saved!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("MyWorlds", "World");
             }
 
             ModelState.AddModelError("", "World could not be created.");

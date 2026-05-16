@@ -30,3 +30,24 @@ else
         </tbody>
     </table>
 }
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successPopup" class="alert alert-success position-fixed top-0 start-50 translate-middle-x mt-4 shadow"
+         style="z-index: 9999;">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            const popup = document.getElementById("successPopup");
+            if (popup) {
+                popup.remove();
+            }
+        }, 3000);
+    </script>
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to WorldForge</h1>
+</div>
