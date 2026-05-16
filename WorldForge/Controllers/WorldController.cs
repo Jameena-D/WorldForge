@@ -47,7 +47,7 @@ namespace WorldForge.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> MyWorlds()
+        public async Task<IActionResult> MyWorlds(string searchTerm = "")
         {
             var userId = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userId))
@@ -61,6 +61,15 @@ namespace WorldForge.Controllers
             var json = await response.Content.ReadAsStringAsync();
             var worlds = JsonSerializer.Deserialize<List<WorldViewModel>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // To search worlds by name
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                worlds = worlds.Where(w => w.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            // Saves the searchterm so it can be shown
+            ViewBag.SearchTerm = searchTerm;
 
             return View(worlds);
         }

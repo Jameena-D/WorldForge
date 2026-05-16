@@ -2,7 +2,10 @@
 @using WorldForge.Models
 @using Shared.Enum
 
+<!-- Page name -->
+<div class="myworld-title">
 <h2>My Worlds</h2>
+</div>
 
 @if (!Model.Any())
 {
@@ -10,27 +13,34 @@
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>World Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var world in Model)
-            {
-                <tr>
-                    <td>@world.Name</td>
-                    <td>@world.Description</td>
-                    <td>@world.WorldType</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <!-- Search bar -->
+    <form method="get" class="search-form">
+        <input type="text" name="searchTerm" placeholder="Search by world name..." value="@ViewBag.SearchTerm" />
+        <button type="submit">Search</button>
+    </form>
+
+<div class="worlds-grid">
+    @foreach (var world in Model)
+    {
+        <div class="world-card">
+            <h3>@world.Name</h3>
+            <p>@world.Description</p>
+
+            <div class="world-actions">
+                <button>Edit</button>
+                <button>Delete</button>
+                <button>Share</button>
+            </div>
+
+            <div class="world-tags">
+                    <span>@world.WorldType</span>
+            </div>
+        </div>
+    }
+</div>
 }
 
+<!-- Success message after a world has been succesfully saved from the Create function -->
 @if (TempData["SuccessMessage"] != null)
 {
     <div id="successPopup" class="alert alert-success position-fixed top-0 start-50 translate-middle-x mt-4 shadow"
@@ -47,7 +57,3 @@ else
         }, 3000);
     </script>
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome to WorldForge</h1>
-</div>
