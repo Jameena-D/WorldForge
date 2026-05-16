@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Shared.DTO;
+using System.Text.Json;
 using WorldForge.ViewModel;
 using static Shared.DTO.DTOWorld;
 
@@ -30,7 +31,8 @@ namespace WorldForge.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 WorldType = model.WorldType!.Value,
-                IsPublic = model.IsPublic
+                IsPublic = model.IsPublic,
+                UserId = HttpContext.Session.GetString("UserId") ?? string.Empty    
             };
 
             var response = await _httpClient.PostAsJsonAsync("api/worlds", dto);
@@ -38,14 +40,39 @@ namespace WorldForge.Controllers
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "🌍 World is saved!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("MyWorlds", "World");
             }
 
             ModelState.AddModelError("", "World could not be created.");
             return View(model);
         }
 
+        public async Task<IActionResult> MyWorlds(string searchTerm = "")
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
 
+            var response = await _httpClient.GetAsync($"api/worlds/myworlds/{userId}");
+
+            if (!response.IsSuccessStatusCode)
+                return View(new List<WorldViewModel>());
+
+            var json = await response.Content.ReadAsStringAsync();
+            var worlds = JsonSerializer.Deserialize<List<WorldViewModel>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // To search worlds by name
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                worlds = worlds.Where(w => w.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            // Saves the searchterm so it can be shown
+            ViewBag.SearchTerm = searchTerm;
+
+            return View(worlds);
+        }
 
         [HttpGet]
         public IActionResult Create()

@@ -44,9 +44,16 @@ namespace RestApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-            if (result.Succeeded)
-                return Ok();
 
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                return Ok(new
+                {
+                    UserId = user.Id,
+                    Email = user.Email
+                });
+            }
             return Unauthorized("Invalid email or password.");
         }
     }

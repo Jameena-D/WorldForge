@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WorldForge.ViewModel;
+using Shared.DTO;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using WorldForge.ViewModel;
+using static Shared.DTO.DTOLogin;
 
 namespace WorldForge.Controllers
 {
@@ -21,37 +24,44 @@ namespace WorldForge.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+public async Task<IActionResult> Login(LoginViewModel model)
+{
+    if (!ModelState.IsValid)
+        return View(model);
+
+    var client = _httpClientFactory.CreateClient("WorldForgeApi");
+
+    var json = JsonSerializer.Serialize(model);
+    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    var response = await client.PostAsync("api/account/login", content);
+
+    var responseBody = await response.Content.ReadAsStringAsync();
+    Debug.WriteLine("Login API Response: " + responseBody);
+
+    if (response.IsSuccessStatusCode)
+    {
+        var loginResponse = JsonSerializer.Deserialize<LoginResponse>(
+            responseBody,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+        );
+
+        if (loginResponse != null)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var client = _httpClientFactory.CreateClient("WorldForgeApi");
-
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            // Construct full URL for API login
-            var fullUrl = new Uri(client.BaseAddress, "api/account/login");
-            Console.WriteLine($"Calling API URL: {fullUrl}");
-
-            var response = await client.PostAsync("api/account/login", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                HttpContext.Session.SetString("Email", model.Email);
-                HttpContext.Session.SetString("IsLoggedIn", "true");
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                var errorBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Login failed. Status: {response.StatusCode}, Body: {errorBody}");
-            }
-
-            ModelState.AddModelError("", "Invalid login");
-            return View(model);
+            HttpContext.Session.SetString("UserId", loginResponse.UserId);
+            HttpContext.Session.SetString("Email", loginResponse.Email);
+            HttpContext.Session.SetString("IsLoggedIn", "true");
+            return RedirectToAction("Index", "Home");
         }
+    }
+    else
+    {
+        Console.WriteLine($"Login failed. Status: {response.StatusCode}, Body: {responseBody}");
+    }
+
+    ModelState.AddModelError("", "Invalid login");
+    return View(model);
+}
 
         [HttpGet]
         public IActionResult Register()

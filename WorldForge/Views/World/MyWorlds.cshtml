@@ -1,0 +1,59 @@
+﻿@model IEnumerable<WorldForge.ViewModel.WorldViewModel>
+@using WorldForge.Models
+@using Shared.Enum
+
+<!-- Page name -->
+<div class="myworld-title">
+<h2>My Worlds</h2>
+</div>
+
+@if (!Model.Any())
+{
+    <p>You haven’t created any worlds yet.</p>
+}
+else
+{
+    <!-- Search bar -->
+    <form method="get" class="search-form">
+        <input type="text" name="searchTerm" placeholder="Search by world name..." value="@ViewBag.SearchTerm" />
+        <button type="submit">Search</button>
+    </form>
+
+<div class="worlds-grid">
+    @foreach (var world in Model)
+    {
+        <div class="world-card">
+            <h3>@world.Name</h3>
+            <p>@world.Description</p>
+
+            <div class="world-actions">
+                <button>Edit</button>
+                <button>Delete</button>
+                <button>Share</button>
+            </div>
+
+            <div class="world-tags">
+                    <span>@world.WorldType</span>
+            </div>
+        </div>
+    }
+</div>
+}
+
+<!-- Success message after a world has been succesfully saved from the Create function -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successPopup" class="alert alert-success position-fixed top-0 start-50 translate-middle-x mt-4 shadow"
+         style="z-index: 9999;">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            const popup = document.getElementById("successPopup");
+            if (popup) {
+                popup.remove();
+            }
+        }, 3000);
+    </script>
+}
