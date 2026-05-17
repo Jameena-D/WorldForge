@@ -1,6 +1,58 @@
-﻿@page
-@model WorldForge.Views.World.EditWorldModel
-@{ 
+﻿@model WorldForge.ViewModel.EditWorldViewModel
+@using Shared.Enum
+@{
     ViewData["Title"] = "Edit World";
 }
 
+<h2>Edit World</h2>
+
+<form method="post" asp-action="EditWorld">
+    <input type="hidden" asp-for="Id" />
+
+    <!-- World fields -->
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description"></textarea>
+    </div>
+    <div>
+        <label asp-for="WorldType"></label>
+        <select asp-for="WorldType"
+                asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
+        </select>
+    </div>
+    <div>
+        <label asp-for="IsPublic"></label>
+        <input asp-for="IsPublic" type="checkbox" />
+    </div>
+
+    <!-- Sections -->
+    @for (int i = 0; i < Model.Sections.Count; i++)
+    {
+        <div class="section" data-section-index="@i">
+            <input type="hidden" asp-for="Sections[i].Id" />
+            <h3>@Model.Sections[i].Title</h3>
+            <input asp-for="Sections[i].Title" type="hidden" />
+
+            <!-- Loop bestaande blocks -->
+            @for (int j = 0; j < Model.Sections[i].Blocks.Count; j++)
+            {
+                <div class="block">
+                    <input type="hidden" asp-for="Sections[i].Blocks[j].Id" />
+                    <label asp-for="Sections[i].Blocks[j].Name">Name</label>
+                    <input asp-for="Sections[i].Blocks[j].Name" />
+                    <label asp-for="Sections[i].Blocks[j].Content">Content</label>
+                    <textarea asp-for="Sections[i].Blocks[j].Content"></textarea>
+                </div>
+            }
+
+            <!-- + Add Block knop **hier, onder alle bestaande blocks** -->
+            <button type="button" class="btn btn-secondary add-block" data-section="@i">+ Add Block</button>
+        </div>
+    }
+
+    <button type="submit">Save</button>
+</form>

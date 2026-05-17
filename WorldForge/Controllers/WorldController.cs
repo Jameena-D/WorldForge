@@ -91,6 +91,17 @@ namespace WorldForge.Controllers
             var world = JsonSerializer.Deserialize<EditWorldViewModel>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
+            if (world.Sections.Count == 0)
+            {
+                world.Sections = new List<WorldForge.ViewModel.WorldSectionInputViewModel>
+                {
+                    new WorldForge.ViewModel.WorldSectionInputViewModel { Title = "Lore", Blocks = new List<WorldForge.ViewModel.WorldBlockInputViewModel> { new() } },
+                    new WorldForge.ViewModel.WorldSectionInputViewModel { Title = "Characters", Blocks = new List<WorldForge.ViewModel.WorldBlockInputViewModel> { new() } },
+                    new WorldForge.ViewModel.WorldSectionInputViewModel { Title = "Locations", Blocks = new List<WorldForge.ViewModel.WorldBlockInputViewModel> { new() } },
+                    new WorldForge.ViewModel.WorldSectionInputViewModel { Title = "Flora & Fauna", Blocks = new List<WorldForge.ViewModel.WorldBlockInputViewModel> { new() } },
+                    new WorldForge.ViewModel.WorldSectionInputViewModel { Title = "Extra", Blocks = new List<WorldForge.ViewModel.WorldBlockInputViewModel> { new() } }
+                };
+            }
             return View(world);
         }
 
