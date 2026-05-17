@@ -12,11 +12,13 @@ namespace WorldForge.Controllers
     {
         private readonly HttpClient _httpClient;
 
+        // The HttpClient is injected via constructor injection, and we use a named client "WorldForgeApi" which should be configured in Program.cs to point to the base URL of our REST API.
         public WorldController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("WorldForgeApi");
         }
 
+        // GET: World/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateWorldViewModel model)
@@ -26,6 +28,7 @@ namespace WorldForge.Controllers
                 return View(model);
             }
 
+            // We create a DTO (Data Transfer Object) to send to the API. This DTO matches the expected structure of the API endpoint for creating a world.
             var dto = new CreateWorldRequest
             {
                 Name = model.Name,
@@ -47,6 +50,7 @@ namespace WorldForge.Controllers
             return View(model);
         }
 
+        // GET: World/MyWorlds
         public async Task<IActionResult> MyWorlds(string searchTerm = "")
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -58,6 +62,7 @@ namespace WorldForge.Controllers
             if (!response.IsSuccessStatusCode)
                 return View(new List<WorldViewModel>());
 
+            // We read the response content as a string and then deserialize it into a list of WorldViewModel objects. The JsonSerializerOptions with PropertyNameCaseInsensitive set to true allows for case-insensitive matching of JSON property names to C# property names.
             var json = await response.Content.ReadAsStringAsync();
             var worlds = JsonSerializer.Deserialize<List<WorldViewModel>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -74,35 +79,20 @@ namespace WorldForge.Controllers
             return View(worlds);
         }
 
+        // GET: World/Edit/5
         [HttpGet]
         public async Task<IActionResult> EditWorld(int id)
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-                return RedirectToAction("Login", "Account");
-
             var response = await _httpClient.GetAsync($"api/worlds/{id}");
             if (!response.IsSuccessStatusCode)
-                return NotFound();
+                return RedirectToAction("MyWorlds");
 
             var json = await response.Content.ReadAsStringAsync();
-            var world = JsonSerializer.Deserialize<WorldViewModel>(json,
+            var world = JsonSerializer.Deserialize<EditWorldViewModel>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            var model = new CreateWorldViewModel
-            {
-                // Initialize any default values for the form here if needed is not currently being used but is in preperation for future function.
-                Sections = new List<WorldSectionInputViewModel>
-                {
-                    new WorldSectionInputViewModel { Title = "Lore", Blocks = new() { new() } },
-                    new WorldSectionInputViewModel { Title = "Characters", Blocks = new() { new() } },
-                    new WorldSectionInputViewModel { Title = "Races & classes", Blocks = new() { new() } },
-                    new WorldSectionInputViewModel { Title = "Flora & fauna", Blocks = new() { new() } },
-                    new WorldSectionInputViewModel { Title = "Locations", Blocks = new() { new() } },
-                    new WorldSectionInputViewModel { Title = "Extra", Blocks = new() { new() } }
-                }
-            };
-            return View(model);
+            return View(world);
         }
+
     }
 }

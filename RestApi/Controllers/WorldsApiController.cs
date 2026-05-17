@@ -17,6 +17,7 @@ namespace RestApi.Controllers
             _context = context;
         }
 
+        // To create a new world
         [HttpPost]
         public IActionResult CreateWorld([FromBody] DTOWorld.CreateWorldRequest request)
         {
@@ -41,6 +42,7 @@ namespace RestApi.Controllers
             return Ok(new { worldId = world.Id });
         }
 
+        // To get all worlds of a user for the "My Worlds" page
         [HttpGet("myworlds/{userId}")]
         public async Task<IActionResult> GetMyWorlds(string userId)
         {
@@ -57,5 +59,40 @@ namespace RestApi.Controllers
                 w.UserId
             }));
         }
+
+        // To get details of a specific world, including its sections and blocks
+        // .Include is used to load related data (sections and blocks) in a single query or it will be null in response
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetWorld(int id)
+        {
+            var world = await _context.Worlds
+                .Include(w => w.Sections)
+                    .ThenInclude(s => s.Blocks)
+                .FirstOrDefaultAsync(w => w.Id == id);
+
+            if (world == null) return NotFound();
+
+            return Ok(new
+            {
+                world.Id,
+                world.Name,
+                world.Description,
+                WorldType = world.WorldType.ToString(),
+                world.IsPublic,
+                world.UserId,
+                Sections = world.Sections.Select(s => new
+                {
+                    s.Id,
+                    s.Title,
+                    Blocks = s.Blocks.Select(b => new
+                    {
+                        b.Id,
+                        b.Name,
+                        b.Content
+                    })
+                })
+            });
+        }
+
     }
 }
