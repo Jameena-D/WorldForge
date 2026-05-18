@@ -6,7 +6,8 @@
 
 <h2>Edit World</h2>
 
-<form method="post" asp-action="EditWorld">
+<form method="post" asp-action="EditWorld" id="editWorldForm">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <input type="hidden" asp-for="Id" />
 
     <!-- World fields -->

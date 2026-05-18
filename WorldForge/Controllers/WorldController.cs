@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Shared.DTO;
+using Shared.Enum;
 using System.Text.Json;
 using WorldForge.ViewModel;
 using static Shared.DTO.DTOWorld;
@@ -105,5 +106,45 @@ namespace WorldForge.Controllers
             return View(world);
         }
 
+        // POST: World/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditWorld(EditWorldViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // DTO voor API
+            var dto = new DTOWorld.UpdateWorldRequest
+            {
+                Id = model.Id,
+                UserId = HttpContext.Session.GetString("UserId") ?? string.Empty,
+                Name = model.Name ?? string.Empty,
+                Description = model.Description ?? string.Empty,
+                WorldType = Enum.TryParse<WorldTypeEnum>(model.WorldType, out var wt) ? wt : WorldTypeEnum.Fantasy,
+                IsPublic = model.IsPublic,
+                Sections = model.Sections?.Select(s => new Shared.DTO.DTOWorld.WorldSectionInputViewModel
+                {
+                    Title = s.Title ?? string.Empty,
+                    Blocks = s.Blocks?.Select(b => new Shared.DTO.DTOWorld.WorldBlockInputViewModel
+                    {
+                        Name = b.Name ?? string.Empty,
+                        Content = b.Content ?? string.Empty
+                    }).ToList() ?? new List<Shared.DTO.DTOWorld.WorldBlockInputViewModel>()
+                }).ToList() ?? new List<Shared.DTO.DTOWorld.WorldSectionInputViewModel>()
+            };
+
+            // PUT request naar API
+            var response = await _httpClient.PutAsJsonAsync("api/worlds", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "🌍 World updated successfully!";
+                return RedirectToAction("MyWorlds");
+            }
+
+            ModelState.AddModelError("", "World could not be updated.");
+            return View(model);
+        }
     }
 }

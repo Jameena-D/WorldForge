@@ -94,5 +94,56 @@ namespace RestApi.Controllers
             });
         }
 
+        // To update an existing world, including its sections and blocks
+        [HttpPut]
+        public IActionResult UpdateWorld([FromBody] DTOWorld.UpdateWorldRequest request)
+        {
+            // Get the world with its sections and blocks to update them
+            var world = _context.Worlds
+                .Include(w => w.Sections)
+                    .ThenInclude(s => s.Blocks)
+                .FirstOrDefault(w => w.Id == request.Id && w.UserId == request.UserId);
+
+            if (world == null)
+                return NotFound("World not found or you are not the owner.");
+
+            world.Name = request.Name;
+            world.Description = request.Description;
+            world.WorldType = request.WorldType;
+            world.IsPublic = request.IsPublic;
+
+            // Remove old sections (and their blocks via cascade)
+            _context.WorldSections.RemoveRange(world.Sections);
+
+            // Clear the in-memory list
+            world.Sections.Clear();
+
+            // Remove old sections (and their blocks via cascade)
+            _context.WorldSections.RemoveRange(world.Sections);
+            world.Sections.Clear();
+
+            if (request.Sections != null)
+            {
+                foreach (var s in request.Sections)
+                {
+                    var section = new WorldSection
+                    {
+                        Title = s.Title ?? string.Empty,
+                        WorldId = world.Id,
+                        Blocks = s.Blocks?.Select(b => new WorldBlock
+                        {
+                            Name = b.Name ?? string.Empty,
+                            Content = b.Content ?? string.Empty
+                        }).ToList() ?? new List<WorldBlock>()
+                    };
+                    world.Sections.Add(section);
+                }
+            }
+
+            _context.SaveChanges();
+
+            return Ok(new { message = "World updated successfully" });
+        }
+
     }
 }
