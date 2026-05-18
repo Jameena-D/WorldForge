@@ -4,56 +4,72 @@
     ViewData["Title"] = "Edit World";
 }
 
-<h2>Edit World</h2>
-
 <form method="post" asp-action="EditWorld" id="editWorldForm">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <input type="hidden" asp-for="Id" />
 
-    <!-- World fields -->
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
-    </div>
-    <div>
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description"></textarea>
-    </div>
-    <div>
-        <label asp-for="WorldType"></label>
-        <select asp-for="WorldType"
-                asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
-        </select>
-    </div>
-    <div>
-        <label asp-for="IsPublic"></label>
-        <input asp-for="IsPublic" type="checkbox" />
-    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card w-100" style="max-width:580px">
 
-    <!-- Sections -->
-    @for (int i = 0; i < Model.Sections.Count; i++)
-    {
-        <div class="section" data-section-index="@i">
-            <input type="hidden" asp-for="Sections[i].Id" />
-            <h3>@Model.Sections[i].Title</h3>
-            <input asp-for="Sections[i].Title" type="hidden" />
+            <div class="card-header p-4">
+                <h2 class="mb-1">🌍 Edit a World</h2>
+            </div>
 
-            <!-- Loop bestaande blocks -->
-            @for (int j = 0; j < Model.Sections[i].Blocks.Count; j++)
-            {
-                <div class="block">
-                    <input type="hidden" asp-for="Sections[i].Blocks[j].Id" />
-                    <label asp-for="Sections[i].Blocks[j].Name">Name</label>
-                    <input asp-for="Sections[i].Blocks[j].Name" />
-                    <label asp-for="Sections[i].Blocks[j].Content">Content</label>
-                    <textarea asp-for="Sections[i].Blocks[j].Content"></textarea>
+            <div class="card-body p-4">
+
+                <!-- World fields -->
+                <div class="field-box mb-3">
+                    <label asp-for="Name">World Name</label>
+                    <input asp-for="Name" class="form-control" />
                 </div>
-            }
 
-            <!-- + Add Block knop **hier, onder alle bestaande blocks** -->
-            <button type="button" class="btn btn-secondary add-block" data-section="@i">+ Add Block</button>
+                <div class="field-box mb-3">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <div class="field-box mb-3">
+                    <label asp-for="WorldType">World Type</label>
+                    <select asp-for="WorldType" class="form-select"
+                            asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
+                    </select>
+                </div>
+
+                <div class="field-box mb-3 d-flex justify-content-between align-items-center">
+                    <label asp-for="IsPublic" class="mb-0">Make this world public?</label>
+                    <input asp-for="IsPublic" type="checkbox" class="form-check-input" />
+                </div>
+
+                <!-- Sections -->
+                @for (int i = 0; i < Model.Sections.Count; i++)
+                {
+                    <div class="section mb-4" data-section-index="@i">
+                        <input type="hidden" asp-for="Sections[i].Id" />
+                        <input type="hidden" asp-for="Sections[i].Title" />
+                        <h3>@Model.Sections[i].Title</h3>
+
+                        @for (int j = 0; j < Model.Sections[i].Blocks.Count; j++)
+                        {
+                            <div class="block mb-3">
+                                <input type="hidden" asp-for="Sections[i].Blocks[j].Id" />
+                                <div class="field-box mb-1">
+                                    <label asp-for="Sections[i].Blocks[j].Name">Name</label>
+                                    <input asp-for="Sections[i].Blocks[j].Name" class="form-control" />
+                                </div>
+                                <div class="field-box">
+                                    <label asp-for="Sections[i].Blocks[j].Content">Content</label>
+                                    <textarea asp-for="Sections[i].Blocks[j].Content" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        }
+
+                        <button type="button" class="btn btn-secondary add-block" data-section="@i">+ Add Block</button>
+                    </div>
+                }
+
+                <button type="submit" class="btn-create mt-2">Save</button>
+
+            </div>
         </div>
-    }
-
-    <button type="submit">Save</button>
+    </div>
 </form>
