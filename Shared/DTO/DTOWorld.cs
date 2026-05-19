@@ -7,7 +7,7 @@ namespace Shared.DTO
         public class CreateWorldRequest
         {
             public string Name { get; set; } = string.Empty;
-            public string? Description { get; set; }
+            public string Description { get; set; } = string.Empty;
             public WorldTypeEnum WorldType { get; set; }
             public bool IsPublic { get; set; }
             public string UserId { get; set; } = string.Empty;
@@ -18,7 +18,7 @@ namespace Shared.DTO
             public int Id { get; set; }
             public string UserId { get; set; } = string.Empty;
             public string Name { get; set; } = string.Empty;
-            public string? Description { get; set; }
+            public string Description { get; set; } = string.Empty;
             public WorldTypeEnum WorldType { get; set; }
             public bool IsPublic { get; set; }
 
@@ -33,8 +33,8 @@ namespace Shared.DTO
 
         public class WorldBlockInputViewModel
         {
-            public string Name { get; set; } = string.Empty;
-            public string Content { get; set; } = string.Empty;
+            public string? Name { get; set; }
+            public string? Content { get; set; }
         }
     }
 }

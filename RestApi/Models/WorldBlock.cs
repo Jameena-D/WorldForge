@@ -5,9 +5,9 @@
         public int Id { get; set; }
         public int WorldSectionId { get; set; }
         public WorldSection? Section { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; }
         //add for picture later
-        public string Content { get; set; } = string.Empty;
+        public string? Content { get; set; }
         
     }
 }

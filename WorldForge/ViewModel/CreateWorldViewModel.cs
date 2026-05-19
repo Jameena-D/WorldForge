@@ -18,7 +18,7 @@ namespace WorldForge.ViewModel
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Description { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "WorldType is required.")]
+        [Required(ErrorMessage = "World Type is required.")]
         public WorldTypeEnum? WorldType { get; set; }
 
         public bool IsPublic { get; set; }
