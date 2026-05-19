@@ -1,0 +1,75 @@
+﻿@model WorldForge.ViewModel.EditWorldViewModel
+@using Shared.Enum
+@{
+    ViewData["Title"] = "Edit World";
+}
+
+<form method="post" asp-action="EditWorld" id="editWorldForm">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <input type="hidden" asp-for="Id" />
+
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card w-100" style="max-width:580px">
+
+            <div class="card-header p-4">
+                <h2 class="mb-1">🌍 Edit a World</h2>
+            </div>
+
+            <div class="card-body p-4">
+
+                <!-- World fields -->
+                <div class="field-box mb-3">
+                    <label asp-for="Name">World Name</label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+
+                <div class="field-box mb-3">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <div class="field-box mb-3">
+                    <label asp-for="WorldType">World Type</label>
+                    <select asp-for="WorldType" class="form-select"
+                            asp-items="Html.GetEnumSelectList<WorldTypeEnum>()">
+                    </select>
+                </div>
+
+                <div class="field-box mb-3 d-flex justify-content-between align-items-center">
+                    <label asp-for="IsPublic" class="mb-0">Make this world public?</label>
+                    <input asp-for="IsPublic" type="checkbox" class="form-check-input" />
+                </div>
+
+                <!-- Sections -->
+                @for (int i = 0; i < Model.Sections.Count; i++)
+                {
+                    <div class="section mb-4" data-section-index="@i">
+                        <input type="hidden" asp-for="Sections[i].Id" />
+                        <input type="hidden" asp-for="Sections[i].Title" />
+                        <h3>@Model.Sections[i].Title</h3>
+
+                        @for (int j = 0; j < Model.Sections[i].Blocks.Count; j++)
+                        {
+                            <div class="block mb-3">
+                                <input type="hidden" asp-for="Sections[i].Blocks[j].Id" />
+                                <div class="field-box mb-1">
+                                    <label asp-for="Sections[i].Blocks[j].Name">Name</label>
+                                    <input asp-for="Sections[i].Blocks[j].Name" class="form-control" />
+                                </div>
+                                <div class="field-box">
+                                    <label asp-for="Sections[i].Blocks[j].Content">Content</label>
+                                    <textarea asp-for="Sections[i].Blocks[j].Content" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        }
+
+                        <button type="button" class="btn btn-secondary add-block" data-section="@i">+ Add Block</button>
+                    </div>
+                }
+
+                <button type="submit" class="btn-create mt-2">Save</button>
+
+            </div>
+        </div>
+    </div>
+</form>

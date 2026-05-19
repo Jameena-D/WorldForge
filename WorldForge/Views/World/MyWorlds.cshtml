@@ -9,7 +9,9 @@
 
 @if (!Model.Any())
 {
+    <div class="myworld-title">
     <p>You haven’t created any worlds yet.</p>
+    </div>
 }
 else
 {
@@ -27,9 +29,11 @@ else
             <p>@world.Description</p>
 
             <div class="world-actions">
-                <button>Edit</button>
+                    <form asp-controller="World" asp-action="EditWorld" method="get" style="display:inline;">
+                        <input type="hidden" name="id" value="@world.Id" />
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
                 <button>Delete</button>
-                <button>Share</button>
             </div>
 
             <div class="world-tags">
