@@ -146,5 +146,7 @@ namespace WorldForge.Controllers
             ModelState.AddModelError("", "World could not be updated.");
             return View(model);
         }
+
+        // Delete world
     }
 }

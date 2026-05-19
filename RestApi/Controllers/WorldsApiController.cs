@@ -145,5 +145,23 @@ namespace RestApi.Controllers
             return Ok(new { message = "World updated successfully" });
         }
 
+        // Delete a world
+        [HttpDelete("{id}")]
+        public IActionResult DeleteWorld(int id, [FromQuery] string userId)
+        {
+            // get the world with its sections and blocks to delete them via cascade and check if the user is the owner
+            var world = _context.Worlds
+                .Include(w => w.Sections)
+                    .ThenInclude(s => s.Blocks)
+                .FirstOrDefault(w => w.Id == id && w.UserId == userId);
+
+            if (world == null)
+                return NotFound("World not found or you are not the owner.");
+
+            _context.Worlds.Remove(world);  // This will cascade delete sections and blocks
+            _context.SaveChanges();
+
+            return Ok(new { message = "World deleted successfully" });
+        }
     }
 }
