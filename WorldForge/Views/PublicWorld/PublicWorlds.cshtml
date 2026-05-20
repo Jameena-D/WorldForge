@@ -1,0 +1,20 @@
+﻿@model List<WorldForge.ViewModel.PublicWorldViewModel>
+
+<h2>Public Worlds</h2>
+
+<div class="world-list">
+@foreach (var world in Model)
+{
+    <div class="world-card">
+        <h3>@world.Name</h3>
+        <p>@world.Description</p>
+        <p>Type: @world.WorldType</p>
+            <div class="world-actions">
+                <form asp-controller="PublicWorld" asp-action="PublicWorldDetail" method="get" style="display:inline;">
+                    <input type="hidden" name="id" value="@world.Id" />
+                    <button type="submit" class="btn btn-secondary">View</button>
+                </form>
+            </div>
+    </div>
+}
+</div>
