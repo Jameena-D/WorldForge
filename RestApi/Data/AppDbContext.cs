@@ -14,6 +14,7 @@ namespace RestApi.Data
         public DbSet<World> Worlds { get; set; }
         public DbSet<WorldSection> WorldSections { get; set; }
         public DbSet<WorldBlock> WorldBlocks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

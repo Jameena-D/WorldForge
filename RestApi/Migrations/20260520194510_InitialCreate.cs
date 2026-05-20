@@ -7,11 +7,14 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace RestApi.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentity : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -165,6 +168,102 @@ namespace RestApi.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Worlds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    WorldType = table.Column<string>(type: "longtext", nullable: false),
+                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Worlds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Worlds_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Content = table.Column<string>(type: "longtext", nullable: false),
+                    WorldId = table.Column<int>(type: "int", nullable: false),
+                    UserId1 = table.Column<string>(type: "varchar(255)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comments_Worlds_WorldId",
+                        column: x => x.WorldId,
+                        principalTable: "Worlds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "WorldSections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    WorldId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldSections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorldSections_Worlds_WorldId",
+                        column: x => x.WorldId,
+                        principalTable: "Worlds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "WorldBlocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    WorldSectionId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    Content = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldBlocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorldBlocks_WorldSections_WorldSectionId",
+                        column: x => x.WorldSectionId,
+                        principalTable: "WorldSections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -201,6 +300,31 @@ namespace RestApi.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId1",
+                table: "Comments",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_WorldId",
+                table: "Comments",
+                column: "WorldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorldBlocks_WorldSectionId",
+                table: "WorldBlocks",
+                column: "WorldSectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Worlds_UserId",
+                table: "Worlds",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorldSections_WorldId",
+                table: "WorldSections",
+                column: "WorldId");
         }
 
         /// <inheritdoc />
@@ -222,7 +346,19 @@ namespace RestApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "WorldBlocks");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "WorldSections");
+
+            migrationBuilder.DropTable(
+                name: "Worlds");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

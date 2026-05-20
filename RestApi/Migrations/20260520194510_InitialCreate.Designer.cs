@@ -11,8 +11,8 @@ using RestApi.Data;
 namespace RestApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260517090946_AddSectionsAndBlocks")]
-    partial class AddSectionsAndBlocks
+    [Migration("20260520194510_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,6 +150,34 @@ namespace RestApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RestApi.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("WorldId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.HasIndex("WorldId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("RestApi.Models.Users", b =>
                 {
                     b.Property<string>("Id")
@@ -244,13 +272,15 @@ namespace RestApi.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("WorldType")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Worlds", (string)null);
                 });
@@ -262,12 +292,10 @@ namespace RestApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
@@ -351,6 +379,34 @@ namespace RestApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RestApi.Models.Comment", b =>
+                {
+                    b.HasOne("RestApi.Models.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.HasOne("RestApi.Models.World", "World")
+                        .WithMany()
+                        .HasForeignKey("WorldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("World");
+                });
+
+            modelBuilder.Entity("RestApi.Models.World", b =>
+                {
+                    b.HasOne("RestApi.Models.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RestApi.Models.WorldBlock", b =>
