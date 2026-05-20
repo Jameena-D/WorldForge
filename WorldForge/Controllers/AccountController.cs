@@ -51,7 +51,7 @@ public async Task<IActionResult> Login(LoginViewModel model)
             HttpContext.Session.SetString("UserId", loginResponse.UserId);
             HttpContext.Session.SetString("Email", loginResponse.Email);
             HttpContext.Session.SetString("IsLoggedIn", "true");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MyWorlds", "World");
         }
     }
     else

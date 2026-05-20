@@ -146,5 +146,25 @@ namespace WorldForge.Controllers
             ModelState.AddModelError("", "World could not be updated.");
             return View(model);
         }
+
+        // Delete world
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteWorld(int id)
+        {
+            // We get the userId from the session to ensure that only the owner of the world can delete it.
+            var userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
+
+            var response = await _httpClient.DeleteAsync($"api/worlds/{id}?userId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "World deleted successfully!";
+                return RedirectToAction("MyWorlds");
+            }
+
+            TempData["ErrorMessage"] = "Could not delete world.";
+            return RedirectToAction("MyWorlds");
+        }
     }
 }

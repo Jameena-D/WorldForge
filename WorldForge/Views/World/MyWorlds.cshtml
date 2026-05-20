@@ -29,11 +29,20 @@ else
             <p>@world.Description</p>
 
             <div class="world-actions">
-                    <form asp-controller="World" asp-action="EditWorld" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="@world.Id" />
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                    </form>
-                <button>Delete</button>
+                    <div class="world-actions">
+                        <!-- Edit knop -->
+                        <form asp-controller="World" asp-action="EditWorld" method="get" style="display:inline;">
+                            <input type="hidden" name="id" value="@world.Id" />
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+
+                        <!-- Delete knop -->
+                        <form asp-controller="World" asp-action="DeleteWorld" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@world.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
             </div>
 
             <div class="world-tags">
