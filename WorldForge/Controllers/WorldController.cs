@@ -66,10 +66,12 @@ namespace WorldForge.Controllers
             // We read the response content as a string and then deserialize it into a list of WorldViewModel objects. The JsonSerializerOptions with PropertyNameCaseInsensitive set to true allows for case-insensitive matching of JSON property names to C# property names.
             var json = await response.Content.ReadAsStringAsync();
             var worlds = JsonSerializer.Deserialize<List<WorldViewModel>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+                // Null-coalescing operator to ensure that if the deserialization returns null (which can happen if the API returns an empty response or if there's an issue with the JSON), we will have an empty list instead of a null reference.
+                ?? new List<WorldViewModel>(); 
 
             // To search worlds by name
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(searchTerm) && worlds != null) // We check if the searchTerm is not null, empty, or whitespace, and also ensure that worlds is not null before attempting to filter it. This prevents potential null reference exceptions.
             {
                 worlds = worlds.Where(w => w.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
             }
@@ -91,6 +93,10 @@ namespace WorldForge.Controllers
             var json = await response.Content.ReadAsStringAsync();
             var world = JsonSerializer.Deserialize<EditWorldViewModel>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // If the world is null, we redirect to the MyWorlds page.
+            if (world == null)
+                return RedirectToAction("MyWorlds");
 
             if (world.Sections.Count == 0)
             {
