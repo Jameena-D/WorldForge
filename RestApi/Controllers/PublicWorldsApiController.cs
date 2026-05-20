@@ -36,5 +36,32 @@ namespace RestApi.Controllers
 
             return Ok(worlds);
         }
+
+        // To get details of a specific public world, including its sections and blocks
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPublicWorldDetail(int id)
+        {
+            var world = await _context.Worlds
+                .Include(w => w.Sections)
+                    .ThenInclude(s => s.Blocks)
+                .FirstOrDefaultAsync(w => w.Id == id && w.IsPublic);
+
+            if (world == null) return NotFound();
+
+            return Ok(new
+            {
+                world.Id,
+                world.Name,
+                world.Description,
+                WorldType = world.WorldType.ToString(),
+                world.IsPublic,
+                Sections = world.Sections.Select(s => new
+                {
+                    s.Id,
+                    s.Title,
+                    Blocks = s.Blocks.Select(b => new { b.Id, b.Name, b.Content })
+                })
+            });
+        }
     }
 }

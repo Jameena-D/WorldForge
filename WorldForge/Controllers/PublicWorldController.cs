@@ -28,5 +28,20 @@ namespace WorldForge.Controllers
 
             return View(worlds);
         }
+
+        // Get details of a specific public world
+        public async Task<IActionResult> PublicWorldDetail(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/publicworlds/{id}");
+
+            if (!response.IsSuccessStatusCode)
+                return RedirectToAction("PublicWorlds");
+
+            var json = await response.Content.ReadAsStringAsync();
+            var world = JsonSerializer.Deserialize<EditWorldViewModel>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return View(world);
+        }
     }
 }

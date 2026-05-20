@@ -12,7 +12,7 @@
         <div class="card w-100" style="max-width:580px">
 
             <div class="card-header p-4">
-                <h2 class="mb-1">🌍 Edit a World</h2>
+                <h2 class="mb-1">🌍 @Model.Name</h2>
             </div>
 
             <div class="card-body p-4">
@@ -69,6 +69,9 @@
 
                 <button type="submit" class="btn-create mt-2">Save</button>
 
+                <div class="world-actions">
+                    <a asp-controller="World" asp-action="MyWorlds" class="btn btn-primary mt-2">Back to My Worlds</a>
+                </div>
             </div>
         </div>
     </div>

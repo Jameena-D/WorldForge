@@ -1,4 +1,65 @@
-﻿@page
-@model WorldForge.Views.PublicWorld.PublicWorldDetailModel
+﻿@model WorldForge.ViewModel.EditWorldViewModel
+@using Shared.Enum
 @{
+    ViewData["Title"] = "Public World Detail";
 }
+
+<div class="d-flex justify-content-center mt-4">
+    <div class="card w-100" style="max-width:580px">
+        <div class="card-header p-4">
+            <h2 class="mb-1">🌍 @Model.Name</h2>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- World fields read-only -->
+            <div class="field-box mb-3">
+                <label>World Name</label>
+                <p class="form-control-plaintext">@Model.Name</p>
+            </div>
+
+            <div class="field-box mb-3">
+                <label>Description</label>
+                <p class="form-control-plaintext">@Model.Description</p>
+            </div>
+
+            <div class="field-box mb-3">
+                <label>World Type</label>
+                <p class="form-control-plaintext">@Model.WorldType</p>
+            </div>
+
+            <!-- Sections read-only -->
+            @if (Model.Sections != null && Model.Sections.Count > 0)
+            {
+                @foreach (var sec in Model.Sections)
+                {
+                    <div class="world-section mb-4">
+                        <h3>@sec.Title</h3>
+
+                        @if (sec.Blocks != null && sec.Blocks.Count > 0)
+                        {
+                            @foreach (var block in sec.Blocks)
+                            {
+                                <div class="block mb-3">
+                                    <div class="field-box mb-1">
+                                        <label>Name</label>
+                                        <p class="form-control-plaintext">@block.Name</p>
+                                    </div>
+                                    <div class="field-box">
+                                        <label>Content</label>
+                                        <p class="form-control-plaintext">@block.Content</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            }
+
+            <div class="world-actions">
+                <a asp-controller="World" asp-action="MyWorlds" class="btn btn-primary mt-2">Back to My Worlds</a>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -54,6 +54,7 @@ namespace WorldForge.Controllers
         // GET: World/MyWorlds
         public async Task<IActionResult> MyWorlds(string searchTerm = "")
         {
+            // We get the userId from the session to ensure that we only fetch worlds that belong to the currently logged-in user. 
             var userId = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account");
