@@ -5,6 +5,8 @@ using RestApi.Data;
 
 namespace RestApi.Controllers
 {
+    [ApiController]
+    [Route("api/publicworlds")]
     public class PublicWorldsApiController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -14,13 +16,14 @@ namespace RestApi.Controllers
             _context = context;
         }
 
-        // GET: api/worlds/public
-        [HttpGet("public")]
+        // Get the public worlds
+        [HttpGet]
         public async Task<IActionResult> GetPublicWorlds()
         {
+            // We query the database for worlds that are marked as public, order them by creation date in descending order.
             var worlds = await _context.Worlds
                 .Where(w => w.IsPublic)
-                .OrderByDescending(w => w.CreatedAt) // Get newest first
+                .OrderByDescending(w => w.CreatedAt)
                 .Select(w => new
                 {
                     w.Id,
