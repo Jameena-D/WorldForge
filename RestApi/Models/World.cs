@@ -17,5 +17,7 @@ namespace RestApi.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string UserId { get; set; } = string.Empty;
+
+        public Users? User { get; set; } = null!;
     }
 }
