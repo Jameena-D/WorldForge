@@ -32,7 +32,7 @@ namespace RestApi.Controllers
                     w.Description,
                     WorldType = w.WorldType.ToString(),
                     w.IsPublic,
-                    OwnerName = w.User != null ? w.User.FullName : "Unknown"
+                    OwnerName = w.User!.FullName
                 })
                 .ToListAsync();
 
