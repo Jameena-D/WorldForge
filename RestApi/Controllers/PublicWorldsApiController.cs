@@ -86,9 +86,6 @@ namespace RestApi.Controllers
                     r.ReporterUserId == dto.ReporterUserId &&
                     !r.IsHandled);
 
-            if (alreadyReported)
-                return Conflict("You already reported this world.");
-
             var report = new ReportWorld
             {
                 WorldId = dto.WorldId,

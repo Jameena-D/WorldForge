@@ -84,5 +84,49 @@ namespace WorldForge.Controllers
 
             return RedirectToAction("PublicWorldDetail", new { id = worldId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ReportWorld(int worldId, string reason)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                TempData["Error"] = "Add a reason for reporting the world.";
+                return RedirectToAction("PublicWorldDetail", new { id = worldId });
+            }
+
+            var dto = new
+            {
+                WorldId = worldId,
+                ReporterUserId = userId,
+                Reason = reason
+            };
+
+            var json = JsonSerializer.Serialize(dto);
+
+            var response = await _httpClient.PostAsync(
+                "api/publicworlds/report",
+                new StringContent(json, Encoding.UTF8, "application/json")
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Success"] = "The world has been reported successfully.";
+            }
+            else if ((int)response.StatusCode == 409)
+            {
+                TempData["Error"] = "You have already reported this world.";
+            }
+            else
+            {
+                TempData["Error"] = "Something went wrong while reporting the world.";
+            }
+
+            return RedirectToAction("PublicWorldDetail", new { id = worldId });
+        }
     }
 }
