@@ -102,8 +102,38 @@
                             <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
                         </div>
                         <p class="mb-0">@comment.Content</p>
+
+                        <!-- Report knop en formulier -->
+                        @if (Context.Session.GetString("IsLoggedIn") == "true")
+                        {
+                            <!-- Report knop -->
+                            <button type="button" class="btn btn-sm btn-outline-danger mb-2"
+                                    onclick="toggleReportForm(@comment.Id)">
+                                Report
+                            </button>
+
+                            <!-- Formulier hidden -->
+                            <form id="reportForm-@comment.Id" class="d-none" asp-controller="Report" asp-action="PostReport" method="post">
+                                <input type="hidden" name="CommentId" value="@comment.Id" />
+                                <input type="hidden" name="WorldId" value="@Model.Id" />
+                                <textarea name="Reason" class="form-control mb-2" placeholder="Reason for reporting" required></textarea>
+                                <button type="submit" class="btn btn-sm btn-danger">Send</button>
+                            </form>
+                        }
+                        
                     </div>
                 }
+
+                <script>
+                                function toggleReportForm(commentId) {
+                                    const form = document.getElementById('reportForm-' + commentId);
+                                    if (form.classList.contains('d-none')) {
+                                        form.classList.remove('d-none');
+                                    } else {
+                                        form.classList.add('d-none');
+                                    }
+                                }
+                </script>
             }
         </div>
     </div>

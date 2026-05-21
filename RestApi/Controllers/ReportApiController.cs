@@ -21,7 +21,9 @@ namespace RestApi.Controllers
         public async Task<IActionResult> ReportComment([FromBody] DTOReport dto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var report = new Report
             {
