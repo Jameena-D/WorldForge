@@ -22,6 +22,7 @@ namespace RestApi.Controllers
         {
             // We query the database for worlds that are marked as public, order them by creation date in descending order.
             var worlds = await _context.Worlds
+                .Include(w => w.User)
                 .Where(w => w.IsPublic)
                 .OrderByDescending(w => w.CreatedAt)
                 .Select(w => new
@@ -30,7 +31,8 @@ namespace RestApi.Controllers
                     w.Name,
                     w.Description,
                     WorldType = w.WorldType.ToString(),
-                    w.IsPublic
+                    w.IsPublic,
+                    OwnerName = w.User!.FullName
                 })
                 .ToListAsync();
 
