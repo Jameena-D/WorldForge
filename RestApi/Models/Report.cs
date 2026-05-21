@@ -1,6 +1,6 @@
 ﻿namespace RestApi.Models
 {
-    public class ReportedComment
+    public class Report
     {
         public int Id { get; set; }
         public int CommentId { get; set; }

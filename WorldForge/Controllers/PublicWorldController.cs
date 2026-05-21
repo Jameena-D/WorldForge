@@ -9,7 +9,6 @@ namespace WorldForge.Controllers
     {
         private readonly HttpClient _httpClient;
 
-        // The HttpClient is injected via constructor injection, and we use a named client "WorldForgeApi" which should be configured in Program.cs to point to the base URL of our REST API.
         public PublicWorldController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("WorldForgeApi");

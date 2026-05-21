@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Shared.DTO
 {
-    public class DTOReportedComment
+    public class DTOReport
     {
         public int CommentId { get; set; }
         public string ReportedUserId { get; set; } = string.Empty;
