@@ -16,28 +16,34 @@ namespace WorldForge.Controllers
 
         // post reports
         [HttpPost]
-        public async Task<IActionResult> PostReport(ReportViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostReport(int worldId, int commentId, string reason)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(reason))
             {
-                return RedirectToAction("PublicWorldDetail", "PublicWorld");
+                TempData["ErrorMessage"] = "Reason cannot be empty.";
+                return RedirectToAction("PublicWorldDetail", "PublicWorld", new { id = worldId });
             }
+
+            var reporterUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
             var dto = new
             {
-                CommentId = model.CommentId,
-                ReporterUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value,
-                Reason = model.Reason
+                CommentId = commentId,
+                ReporterUserId = reporterUserId,
+                Reason = reason
             };
 
-            var json = JsonSerializer.Serialize(dto);
-            var response = await _httpClient.PostAsync("api/reports", new StringContent(json, Encoding.UTF8, "application/json"));
+            var response = await _httpClient.PostAsJsonAsync("api/report", dto);
 
-            TempData["Success"] = response.IsSuccessStatusCode ?
-                "Comment reported successfully." :
-                "Failed to report the comment.";
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Comment got reported!";
+                return RedirectToAction("PublicWorldDetail", "PublicWorld", new { id = worldId });
+            }
 
-            return RedirectToAction("PublicWorldDetail", "PublicWorld");
+            TempData["ErrorMessage"] = "Something went wrong while reporting the comment.";
+            return RedirectToAction("PublicWorldDetail", "PublicWorld", new { id = worldId });
         }
 
         // admin notification page

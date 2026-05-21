@@ -8,6 +8,7 @@ namespace Shared.DTO
     {
         public int CommentId { get; set; }
         public string ReportedUserId { get; set; } = string.Empty;
+        public string ReporterUserId { get; set; } = string.Empty;
         public string Reason { get; set; } = string.Empty;
         public DateTime ReportedAt { get; set; }
         public string Status { get; set; } = string.Empty;

@@ -29,6 +29,7 @@ namespace RestApi.Controllers
             {
                 CommentId = dto.CommentId,
                 ReportedUserId = dto.ReportedUserId,
+                ReporterUserId = dto.ReporterUserId,
                 Reason = dto.Reason,
                 ReportedAt = dto.ReportedAt
             };

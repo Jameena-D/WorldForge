@@ -15,6 +15,5 @@ namespace RestApi.Models
         public Users User { get; set; } = null!;
         [ForeignKey("UserId")]
         public string UserId { get; set; } = string.Empty;
-
     }
 }
