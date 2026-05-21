@@ -46,5 +46,63 @@ namespace RestApi.Controllers
 
             return Ok(reports);
         }
+
+        // DELETE api/admin/reports/world/{worldId}
+        [HttpDelete("world/{worldId}")]
+        public async Task<IActionResult> DeleteWorld(int worldId)
+        {
+            var world = await _context.Worlds.FindAsync(worldId);
+            if (world == null)
+                return NotFound("World not found.");
+
+            // Mark all related reports as handled before deleting the world
+            var reports = await _context.ReportWorlds
+                .Where(r => r.WorldId == worldId)
+                .ToListAsync();
+
+            foreach (var r in reports)
+                r.IsHandled = true;
+
+            _context.Worlds.Remove(world);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "World deleted and reports resolved." });
+        }
+
+        // PATCH api/admin/reports/world/{worldId}/unpublish
+        [HttpPatch("world/{worldId}/unpublish")]
+        public async Task<IActionResult> UnpublishWorld(int worldId)
+        {
+            var world = await _context.Worlds.FindAsync(worldId);
+            if (world == null)
+                return NotFound("World not found.");
+
+            world.IsPublic = false;
+
+            var reports = await _context.ReportWorlds
+                .Where(r => r.WorldId == worldId && !r.IsHandled)
+                .ToListAsync();
+
+            foreach (var r in reports)
+                r.IsHandled = true;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "World unpublished and reports resolved." });
+        }
+
+        // POST api/admin/reports/{reportId}/dismiss
+        [HttpPost("{reportId}/dismiss")]
+        public async Task<IActionResult> DismissReport(int reportId)
+        {
+            var report = await _context.ReportWorlds.FindAsync(reportId);
+            if (report == null)
+                return NotFound("Report not found.");
+
+            report.IsHandled = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Report dismissed." });
+        }
     }
 }
