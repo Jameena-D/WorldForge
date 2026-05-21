@@ -1,6 +1,8 @@
 ﻿@{
     var isLoggedIn = Context.Session.GetString("IsLoggedIn") == "true";
     var email = Context.Session.GetString("Email");
+    var role = Context.Session.GetString("Role");
+    var isAdmin = isLoggedIn && role == "Admin";
 }
 
 <ul class="navbar-nav ms-auto">
@@ -20,6 +22,13 @@
         <li class="nav-item">
             <a class="nav-link" asp-controller="PublicWorld" asp-action="PublicWorlds">Public Worlds</a>
         </li>
+        <!-- Admin Panel -->
+        @if (isAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-warning" asp-controller="AdminReports" asp-action="Reports">Notifications</a>
+            </li>
+        }
         <!-- Email -->
         <li class="nav-item">
             <span class="nav-link text-light">@email</span>

@@ -48,10 +48,12 @@ namespace RestApi.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
+                var roles = await _userManager.GetRolesAsync(user!);
                 return Ok(new
                 {
-                    UserId = user.Id,
-                    Email = user.Email
+                    UserId = user!.Id,
+                    Email = user.Email,
+                    IsAdmin = roles.Contains("Admin")
                 });
             }
             return Unauthorized("Invalid email or password.");
