@@ -1,11 +1,13 @@
-﻿@model WorldForge.ViewModel.EditWorldViewModel
+﻿@model WorldForge.ViewModel.PublicWorldDetailViewModel
 @using Shared.Enum
+
 @{
-    ViewData["Title"] = "Public World Detail";
+    ViewData["Title"] = "Public detail world";
 }
 
-<div class="d-flex justify-content-center mt-4">
-    <div class="card w-100" style="max-width:580px">
+<div class="d-flex justify-content-center mt-4 gap-4 flex-wrap">
+    <!-- World Card -->
+    <div class="card flex-fill" style="flex: 1 1 400px; max-width: 580px;">
         <div class="card-header p-4">
             <h2 class="mb-1">🌍 @Model.Name</h2>
         </div>
@@ -56,10 +58,53 @@
                 }
             }
 
+            <!-- Button to go back-->
             <div class="world-actions">
                 <a asp-controller="World" asp-action="MyWorlds" class="btn btn-primary mt-2">Back to My Worlds</a>
             </div>
 
+        </div>
+    </div>
+
+    <!-- Comments Card -->
+    <div class="card flex-fill" style="flex: 1 1 400px; max-width: 580px;">
+        <div class="card-header p-3">
+            <h5 class="mb-0">💬 Comments</h5>
+        </div>
+        <div class="card-body p-4" style="max-height: 700px; overflow-y: auto;">
+
+            @if (Context.Session.GetString("IsLoggedIn") == "true")
+            {
+                <form asp-controller="PublicWorld" asp-action="PostComment" method="post" class="mb-4">
+                    <input type="hidden" name="worldId" value="@Model.Id" />
+                    <div class="mb-2">
+                        <textarea name="content" class="form-control" rows="3" placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send the comment</button>
+                </form>
+            }
+            else
+            {
+                <p class="text-muted mb-3"><a asp-controller="Account" asp-action="Login">Log in</a> to leave a comment.</p>
+            }
+
+            @if (Model.Comments == null || Model.Comments.Count == 0)
+            {
+                <p class="text-muted">No comments yet. Be the first!</p>
+            }
+            else
+            {
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="border rounded p-3 mb-3">
+                        <div class="d-flex align-items-center mb-1">
+                            <strong class="me-2">@comment.OwnerName</strong>
+                            <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
+                        </div>
+                        <p class="mb-0">@comment.Content</p>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

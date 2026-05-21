@@ -1,4 +1,6 @@
-﻿namespace RestApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestApi.Models
 {
     public class Comment
     {
@@ -11,6 +13,7 @@
         public int WorldId { get; set; }
 
         public Users User { get; set; } = null!;
+        [ForeignKey("UserId")]
         public string UserId { get; set; } = string.Empty;
 
     }
