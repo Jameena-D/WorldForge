@@ -1,6 +1,6 @@
 ﻿namespace WorldForge.ViewModel
 {
-    public class ReportWorldViewModel
+    public class ReportedWorldViewModel
     {
         public int WorldId { get; set; }
         public string WorldName { get; set; } = string.Empty;

@@ -1,0 +1,133 @@
+﻿@model List<WorldForge.ViewModel.ReportedWorldViewModel>
+
+@{
+    ViewData["Title"] = "Reported Worlds";
+}
+
+<div class="admin-header">
+    <div>
+        <h1>&#9873; Reported Worlds</h1>
+        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:4px;">
+            Review and action user-submitted reports
+        </div>
+    </div>
+    <span class="badge-count">@Model.Count world@(Model.Count == 1 ? "" : "s") flagged</span>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-glass mb-3" role="alert">
+        ✓ @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-glass alert-glass-danger mb-3" role="alert">
+        ✕ @TempData["Error"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">✅</div>
+        <h4>No reported worlds</h4>
+        <p>All clear — there are no pending reports to review.</p>
+    </div>
+}
+else
+{
+    foreach (var world in Model)
+    {
+        <div class="report-card">
+            <div class="report-card-header">
+                <div>
+                    <div class="world-title">@world.WorldName</div>
+                    <div class="world-meta">
+                        Owner: <strong style="color:white;">@world.OwnerName</strong>
+                        &nbsp;&bull;&nbsp;
+                        <span class="status-pill @(world.IsPublic ? "pill-public" : "pill-private")">
+                            @(world.IsPublic ? "● Public" : "○ Private")
+                        </span>
+                    </div>
+                </div>
+                <span class="report-badge">⚑ @world.ReportCount report@(world.ReportCount == 1 ? "" : "s")</span>
+            </div>
+
+            <div class="report-card-body">
+                <!-- Action buttons -->
+                <div class="action-bar">
+                    <button type="button"
+                            class="btn btn-danger-action"
+                            data-bs-toggle="modal"
+                            data-bs-target="#confirmModal"
+                            data-action="delete"
+                            data-world-id="@world.WorldId"
+                            data-world-name="@world.WorldName">
+                        🗑 Delete World
+                    </button>
+
+                    @if (world.IsPublic)
+                    {
+                        <button type="button"
+                                class="btn btn-warning-action"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmModal"
+                                data-action="unpublish"
+                                data-world-id="@world.WorldId"
+                                data-world-name="@world.WorldName">
+                            🔒 Make Non-Public
+                        </button>
+                    }
+                </div>
+
+                <!-- Individual reports -->
+                <div class="reports-list-label">Reports</div>
+
+                @foreach (var report in world.Reports)
+                {
+                    <div class="report-item">
+                        <div class="report-item-info">
+                            <div class="report-reason">"@report.Reason"</div>
+                            <div class="report-submeta">
+                                Reported by <strong>@report.ReporterName</strong>
+                                &bull; @report.ReportedAt.ToString("dd MMM yyyy, HH:mm") UTC
+                            </div>
+                        </div>
+                        <form asp-controller="Admin" asp-action="DismissReport" method="post" style="flex-shrink:0;">
+                            <input type="hidden" name="reportId" value="@report.Id" />
+                            <button type="submit" class="btn btn-dismiss">Dismiss</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+
+<!-- Confirmation modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalTitle">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="confirmModalBody" style="color:#3d2651; padding:1.5rem;">
+            </div>
+            <div class="modal-footer" style="border:none; padding:1rem 1.5rem 1.5rem;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        style="border-radius:10px; font-weight:600;">
+                    Cancel
+                </button>
+                <form id="confirmForm" method="post" style="display:inline;">
+                    <button type="submit" id="confirmBtn" class="btn"
+                            style="border-radius:10px; font-weight:600; color:white; border:none; padding:0.5rem 1.25rem;">
+                        Confirm
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

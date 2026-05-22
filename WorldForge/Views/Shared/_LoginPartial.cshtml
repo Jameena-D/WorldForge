@@ -2,7 +2,7 @@
     var isLoggedIn = Context.Session.GetString("IsLoggedIn") == "true";
     var email = Context.Session.GetString("Email");
     var role = Context.Session.GetString("Role");
-    var isAdmin = isLoggedIn && role == "Admin";
+    var isAdmin = Context.Session.GetString("IsAdmin") == "true";
 }
 
 <ul class="navbar-nav ms-auto">
@@ -26,7 +26,7 @@
         @if (isAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-warning" asp-controller="AdminReports" asp-action="Reports">Notifications</a>
+                <a class="nav-link text-warning" asp-controller="Admin" asp-action="ReportedWorlds">Notifications</a>
             </li>
         }
         <!-- Email -->

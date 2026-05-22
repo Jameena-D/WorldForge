@@ -28,12 +28,12 @@ namespace WorldForge.Controllers
             var response = await _httpClient.GetAsync("api/admin/reports");
 
             if (!response.IsSuccessStatusCode)
-                return View(new List<ReportWorldViewModel>());
+                return View(new List<ReportedWorldViewModel>());
 
             var json = await response.Content.ReadAsStringAsync();
-            var worlds = JsonSerializer.Deserialize<List<ReportWorldViewModel>>(json,
+            var worlds = JsonSerializer.Deserialize<List<ReportedWorldViewModel>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-                ?? new List<ReportWorldViewModel>();
+                ?? new List<ReportedWorldViewModel>();
 
             return View(worlds);
         }
