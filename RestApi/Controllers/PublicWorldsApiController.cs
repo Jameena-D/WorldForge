@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RestApi.Models;
 using RestApi.Data;
+using Shared.DTO;
 
 namespace RestApi.Controllers
 {
@@ -64,6 +65,40 @@ namespace RestApi.Controllers
                     Blocks = s.Blocks.Select(b => new { b.Id, b.Name, b.Content })
                 })
             });
+        }
+
+        // User reports a public world
+        [HttpPost("report")]
+        public async Task<IActionResult> ReportWorld([FromBody] DTOReportWorld dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var world = await _context.Worlds
+                .FirstOrDefaultAsync(w => w.Id == dto.WorldId && w.IsPublic);
+
+            if (world == null)
+                return NotFound("World not found or not public.");
+
+            var alreadyReported = await _context.ReportWorlds
+                .AnyAsync(r =>
+                    r.WorldId == dto.WorldId &&
+                    r.ReporterUserId == dto.ReporterUserId &&
+                    !r.IsHandled);
+
+            var report = new ReportWorld
+            {
+                WorldId = dto.WorldId,
+                ReporterUserId = dto.ReporterUserId,
+                Reason = dto.Reason,
+                ReportedAt = DateTime.UtcNow,
+                IsHandled = false
+            };
+
+            _context.ReportWorlds.Add(report);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "World reported successfully." });
         }
     }
 }

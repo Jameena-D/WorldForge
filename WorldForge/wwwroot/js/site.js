@@ -1,4 +1,5 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿// Add event listener to handle form submission for creating a world
+document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("createWorldForm");
     if (!form) return;
 
@@ -44,5 +45,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
             sectionDiv.insertBefore(newBlock, button);
         });
+    });
+});
+
+// Add event listener to handle showing the confirmation modal for delete/unpublish actions
+document.addEventListener('DOMContentLoaded', function () {
+    var confirmModal = document.getElementById('confirmModal');
+    confirmModal.addEventListener('show.bs.modal', function (event) {
+        var btn = event.relatedTarget;
+        var action = btn.getAttribute('data-action');
+        var worldId = btn.getAttribute('data-world-id');
+        var worldName = btn.getAttribute('data-world-name');
+
+        var form = document.getElementById('confirmForm');
+        var confBtn = document.getElementById('confirmBtn');
+        var title = document.getElementById('confirmModalTitle');
+        var body = document.getElementById('confirmModalBody');
+
+        if (action === 'delete') {
+            title.textContent = 'Delete World';
+            body.innerHTML = '<p>Are you sure you want to <strong>permanently delete</strong> the world <em>"' + worldName + '"</em>? This cannot be undone.</p>';
+            form.action = '/Admin/DeleteWorld';
+            confBtn.style.background = 'linear-gradient(135deg, #c0392b, #a93226)';
+            confBtn.textContent = 'Delete';
+        } else {
+            title.textContent = 'Make World Non-Public';
+            body.innerHTML = '<p>This will remove <em>"' + worldName + '"</em> from the public listing. The world owner will retain access to it in their private worlds.</p>';
+            form.action = '/Admin/UnpublishWorld';
+            confBtn.style.background = 'linear-gradient(135deg, #e67e22, #d35400)';
+            confBtn.textContent = 'Make Non-Public';
+        }
+
+        // Inject the worldId hidden input
+        var existing = form.querySelector('input[name="worldId"]');
+        if (existing) existing.remove();
+        var hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'worldId';
+        hidden.value = worldId;
+        form.prepend(hidden);
     });
 });
