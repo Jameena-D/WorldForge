@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using WorldForge.Services;
 using WorldForge.ViewModel;
 
 namespace WorldForge.Controllers
@@ -8,15 +9,32 @@ namespace WorldForge.Controllers
     {
         private readonly HttpClient _httpClient;
 
-        public AdminController(IHttpClientFactory httpClientFactory)
+        //public AdminController(IHttpClientFactory httpClientFactory)
+        //{
+        //    _httpClient = httpClientFactory.CreateClient("WorldForgeApi");
+        //}
+
+        //// Guard: only admins may access this area
+        //private bool IsAdmin()
+        //{
+        //    return HttpContext.Session.GetString("IsAdmin") == "true";
+        //}
+
+
+        private readonly AdminAccessService _adminAccessService;
+
+        public AdminController(IHttpClientFactory httpClientFactory, AdminAccessService adminAccessService)
         {
             _httpClient = httpClientFactory.CreateClient("WorldForgeApi");
+            _adminAccessService = adminAccessService;
         }
 
-        // Guard: only admins may access this area
         private bool IsAdmin()
         {
-            return HttpContext.Session.GetString("IsAdmin") == "true";
+            return _adminAccessService.IsAdmin(
+                HttpContext.Session.GetString("IsLoggedIn"),
+                HttpContext.Session.GetString("IsAdmin")
+            );
         }
 
         // GET /Admin/ReportedWorlds
