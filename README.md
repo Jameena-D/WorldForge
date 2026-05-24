@@ -50,6 +50,12 @@ https://github.com/Jameena-D/WorldForge.git
 * Leave comments on a public world
 * Report a public world if it has harmfull content
 
+**Branch strategie**
+* Main - The end version of the applicatie. When de application is done there will be a pull request with develop so the full working version of the application is on main.
+* Develop - This is where all branches get merged into when the feature / fix etc are done. When a feature is finished it will immediately get merged with develop.
+* feature/{thefeaturename} - A branch based on develop where a new feature will be developed. When a feature is completly done it will get merged with develop.
+* bug/fix - A branch where small typos, weird symbols and bug fixes get resolved and then merged into develop.
+
 # DP 6
 # Threat Mitigation
 STRIDE: Tampering
