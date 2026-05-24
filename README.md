@@ -38,6 +38,7 @@ https://github.com/Jameena-D/WorldForge.git
 **VS**
 * Go to Package manager Console (NuGut)
 * Run ```Update-Database```
+* Configure start up projects -> RestApi & Worldforge need to start
 
 **World Forge functions**
 * Create an account
