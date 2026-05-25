@@ -37,6 +37,7 @@ https://github.com/Jameena-D/WorldForge.git
 
 **VS**
 * Go to Package manager Console (NuGut)
+* Make sure you have chosen RestApi as default project
 * Run ```Update-Database```
 * Configure start up projects -> RestApi & Worldforge need to start
 
