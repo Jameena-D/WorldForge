@@ -22,13 +22,6 @@
     border-radius: 20px;
 }
 
-/*.world-image img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
-}*/
-
 .world-actions {
     margin-top: 10px;
     display: flex;
