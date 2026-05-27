@@ -3,7 +3,7 @@ A page where you can create a world by filling in a name, description the worldt
 
 **Stack**
 * C#
-* html (razor)
+* html 
 * css
 * JavaScript
 * .NET
