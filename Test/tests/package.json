@@ -1,0 +1,14 @@
+{
+  "name": "worldforge",
+  "version": "1.0.0",
+  "description": "A page where you can create a world by filling in a name, description the worldtype and if you want it public or not.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1"
+  }
+}
